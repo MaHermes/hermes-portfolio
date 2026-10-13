@@ -1,12 +1,109 @@
 
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, useNavigate } from "react-router-dom"
 import ProjectCard from "./components/ProjectCard"
 import ProjectDetail from "./components/ProjectDetail"
 import { projects } from "./data/projects"
 import NotFound from "./components/NotFound"
 import { QRCodeSVG } from "qrcode.react";
+import { useEffect, useState } from "react"
 
 function HomePage() {
+  const navigate = useNavigate()
+
+  const labProjects = [
+    {
+      number: "01",
+      title: "Ancient Airlines",
+      description: "Physics-based flight simulator · Unreal Engine",
+      image: "/images/projects/ancient-airlines-6.png",
+      to: "/projects/ancient-airlines"
+    },
+    {
+      number: "02",
+      title: "Memblox",
+      description: "Modular organizer app · React Native · Firebase",
+      image: "/images/projects/memblox.jpg",
+      to: "/projects/memblox"
+    },
+    {
+      number: "03",
+      title: "Close Up Together",
+      description: "Collaborative video learning · React · Node.js · Firebase",
+      image: "/images/projects/close-up-together-5.PNG",
+      to: "/projects/close-up-together"
+    },
+    {
+      number: "04",
+      title: "QR Contact",
+      description: "Privacy-focused contact system · React · Node.js",
+      image: "/images/projects/qr-contact.jpg",
+      to: "/projects/qr-contact"
+    },
+    {
+      number: "05",
+      title: "Coptaxi",
+      description: "Space taxi game · Unity · Custom level editor",
+      image: "/images/projects/coptaxi-4.jpg",
+      to: "/projects/coptaxi"
+    },
+    {
+      number: "06",
+      title: "Flash Games",
+      description: "Indie games · Flash · Game design & development",
+      image: "/images/projects/soundcheck-1.png",
+      to: "/projects/flash-games"
+    }
+  ]
+  
+  const [activeLabProject, setActiveLabProject] = useState(0)
+  const [labPauseUntil, setLabPauseUntil] = useState<number | null>(null)
+  const [isCompactLabLayout, setIsCompactLabLayout] = useState(
+    () => window.matchMedia("(max-width: 800px)").matches,
+  )
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 800px)")
+    const updateLayout = () => setIsCompactLabLayout(mediaQuery.matches)
+
+    updateLayout()
+    mediaQuery.addEventListener("change", updateLayout)
+
+    return () => mediaQuery.removeEventListener("change", updateLayout)
+  }, [])
+
+  const pauseLabCarousel = () => {
+    setLabPauseUntil(Date.now() + 10000)
+  }
+
+  const nextLabProject = () => {
+    pauseLabCarousel()
+    setActiveLabProject((current) => (current + 1) % labProjects.length)
+  }
+
+  const previousLabProject = () => {
+    pauseLabCarousel()
+    setActiveLabProject(
+      (current) => (current - 1 + labProjects.length) % labProjects.length,
+    )
+  }
+
+  useEffect(() => {
+    if (isCompactLabLayout) {
+      return undefined
+    }
+
+    const pauseRemaining = labPauseUntil
+      ? Math.max(0, labPauseUntil - Date.now())
+      : 0
+    const timeoutId = window.setTimeout(() => {
+      setActiveLabProject((current) => (current + 1) % labProjects.length)
+    }, pauseRemaining + 5000)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [activeLabProject, isCompactLabLayout, labProjects.length, labPauseUntil])
+
+  const activeProject = labProjects[activeLabProject]
+
   return (
     <div>
       <header className="site-header">
@@ -192,37 +289,95 @@ function HomePage() {
               “Could I build this?”
             </p>
           </div>
-          
-          
-          <div className="lab-projects">
-            <article>
-              <span>01</span>
-              <h3>Ancient Airlines</h3>
-              <p>Physics-based flight simulator · Unreal Engine</p>
-            </article>
-            <a className="lab-project" href="/projects/close-up-together">
-              <span>02</span>
-              <h3>Close Up Together</h3>
-              <p>Collaborative video learning · React · Node.js · Firebase</p>
-              <span className="lab-project-link">Explore project ↗</span>
-            </a>
 
-            <a className="lab-project" href="/projects/qr-contact">
-              <span>03</span>
-              <h3>QR Contact</h3>
-              <p>Privacy-focused contact system · React · Node.js</p>
-              <span className="lab-project-link">Explore project ↗</span>
-            </a>
-            <article>
-              <span>04</span>
-              <h3>Coptaxi</h3>
-              <p>Space taxi game · Unity · Custom level editor</p>
-            </article>
-            <article>
-              <span>05</span>
-              <h3>Flash Games</h3>
-              <p>Indie games · Flash · Game design & development</p>
-            </article>
+          <div className="lab-showcase">
+            <div className="lab-project-list">
+              {labProjects.map((project, index) => (
+                <button
+                  key={project.number}
+                  type="button"
+                  className={`lab-project-item ${
+                    index === activeLabProject ? "active" : ""
+                  }`}
+                  onClick={() => {
+                    if (isCompactLabLayout) {
+                      navigate(project.to)
+                      return
+                    }
+
+                    pauseLabCarousel()
+                    setActiveLabProject(index)
+                  }}
+                  aria-label={`Open project ${project.title}`}
+                >
+                  <span className="lab-project-number">{project.number}</span>
+
+                  <span className="lab-project-content">
+                    <span className="lab-project-title">{project.title}</span>
+                    <span className="lab-project-description">
+                      {project.description}
+                    </span>
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            <div className="lab-showcase-viewport">
+              <div className="lab-showcase-media">
+                <a className="lab-showcase-image" href={activeProject.to}>
+                  <img src={activeProject.image} alt={activeProject.title} />
+
+                  <span className="lab-showcase-overlay">
+                    Explore project ↗
+                  </span>
+                </a>
+
+                <div className="lab-showcase-controls">
+                  <button
+                    type="button"
+                    className="lab-nav-button"
+                    onClick={previousLabProject}
+                    aria-label="Previous project"
+                  >
+                    ←
+                  </button>
+                  <button
+                    type="button"
+                    className="lab-nav-button"
+                    onClick={nextLabProject}
+                    aria-label="Next project"
+                  >
+                    →
+                  </button>
+                </div>
+              </div>
+
+              <div className="lab-showcase-meta">
+                <span className="lab-showcase-tag">Lab project</span>
+                <h3>{activeProject.title}</h3>
+                <p>{activeProject.description}</p>
+                <a className="lab-showcase-link" href={activeProject.to}>
+                  Explore project ↗
+                </a>
+              </div>
+
+              <div className="lab-showcase-dots" aria-label="Project navigation">
+                {labProjects.map((project, index) => (
+                  <button
+                    key={`${project.title}-dot`}
+                    type="button"
+                    className={`lab-dot ${
+                      index === activeLabProject ? "active" : ""
+                    }`}
+                    onClick={() => {
+                      pauseLabCarousel()
+                      setActiveLabProject(index)
+                    }}
+                    aria-label={`Go to ${project.title}`}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
 
 

@@ -16,6 +16,15 @@ export type Project = {
   
   export const projects: Project[] = [
     {
+      slug: "ancient-airlines",
+      title: "Ancient Airlines",
+      subtitle: "Personal · Unreal Engine",
+      description:
+        "A physics-based flight simulator developed with Unreal Engine.",
+      technologies: ["Unreal Engine"],
+      image: "/images/projects/ancient-airlines.jpg",
+    },
+    {
       slug: "eldrador",
       title: "Eldrador Creatures",
       subtitle: "Professional · Unity · Multi-platform",
@@ -116,6 +125,24 @@ export type Project = {
         ],
         highlights:
           "Custom contact workflow, QR-code-based access, privacy-conscious communication and self-hosted deployment."
+      },
+      {
+        slug: "coptaxi",
+        title: "Coptaxi",
+        subtitle: "Personal · Unity",
+        description:
+          "A space taxi game developed with Unity, including a custom level editor.",
+        technologies: ["Unity", "Custom level editor"],
+        image: "/images/projects/coptaxi.jpg",
+      },
+      {
+        slug: "flash-games",
+        title: "Flash Games",
+        subtitle: "Indie · Flash",
+        description:
+          "A collection of indie games created with Flash, covering game design and development.",
+        technologies: ["Flash", "Game design"],
+        image: "/images/projects/flash-games.jpg",
       }
 
   ]

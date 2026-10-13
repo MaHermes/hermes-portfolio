@@ -908,3 +908,244 @@ main > section h2 {
 .lab-project:hover .lab-project-link {
   color: #ffffff;
 }
+
+/* The Lab showcase */
+
+.lab-showcase {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1.6fr);
+  gap: 48px;
+  align-items: stretch;
+}
+
+.lab-project-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid #2a3038;
+}
+
+.lab-project-item {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 18px;
+  width: 100%;
+  padding: 24px 12px;
+  border: 0;
+  border-bottom: 1px solid #2a3038;
+  background: transparent;
+  color: #777d87;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    color 0.25s ease,
+    background 0.25s ease;
+}
+
+.lab-project-item:hover {
+  color: #cfd3d9;
+}
+
+.lab-project-item.active {
+  color: #ffffff;
+  background: #111419;
+}
+
+.lab-project-number {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: #555b64;
+  padding-top: 3px;
+}
+
+.lab-project-item.active .lab-project-number {
+  color: #8da4c0;
+}
+
+.lab-project-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lab-project-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.lab-project-description {
+  color: #777d87;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.lab-project-item.active .lab-project-description {
+  color: #9da5b1;
+}
+
+.lab-showcase-viewport {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lab-showcase-media {
+  position: relative;
+}
+
+.lab-showcase-controls {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  pointer-events: none;
+}
+
+.lab-nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #2a3038;
+  border-radius: 50%;
+  background: #111419;
+  color: #ffffff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.lab-nav-button:hover {
+  border-color: #5a6775;
+  background: #171c22;
+  transform: translateY(-1px);
+}
+
+.lab-showcase-image {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+  border: 1px solid #2a3038;
+  background: #111419;
+}
+
+.lab-showcase-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.lab-showcase-overlay {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  padding: 10px 14px;
+  background: rgba(11, 13, 16, 0.82);
+  color: #ffffff;
+  font-size: 0.85rem;
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.lab-showcase-image:hover .lab-showcase-overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.lab-showcase-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lab-showcase-tag {
+  color: #8da4c0;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.lab-showcase-meta h3 {
+  margin: 0;
+  font-size: clamp(1.6rem, 2vw, 2.2rem);
+  letter-spacing: -0.04em;
+}
+
+.lab-showcase-meta p {
+  margin: 0;
+  color: #9aa1ac;
+  line-height: 1.7;
+}
+
+.lab-showcase-link {
+  width: fit-content;
+  margin-top: 4px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #526987;
+  color: #d7e0ed;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.lab-showcase-link:hover {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.lab-showcase-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.lab-dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 1px solid #556070;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.lab-dot:hover {
+  border-color: #c7cfdb;
+}
+
+.lab-dot.active {
+  background: #ffffff;
+  border-color: #ffffff;
+  transform: scale(1.15);
+}
+
+@media (max-width: 800px) {
+  .lab-showcase {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .lab-showcase-viewport {
+    display: none;
+  }
+}
